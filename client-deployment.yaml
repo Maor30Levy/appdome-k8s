@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec: 
+      containers:
+        - name: client
+          image: maor30levy/appdome-client
+          ports:
+            - containerPort: 3000
+          env:
+          - name: SERVER_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: appdome-env
+                key: SERVER_HOST
+          - name: SERVER_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: appdome-env
+                key: SERVER_PORT
